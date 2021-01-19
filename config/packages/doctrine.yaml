@@ -7,6 +7,7 @@ parameters:
 
 doctrine:
     dbal:
+        schema_filter: ~^(?!event)~ # this will ignore broadway event store table
         driver:   pdo_mysql
         host:     "%env(DATABASE_HOST)%"
         port:     "%env(DATABASE_PORT)%"
