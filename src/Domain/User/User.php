@@ -19,9 +19,12 @@ use Ramsey\Uuid\UuidInterface;
 
 class User extends EventSourcedAggregateRoot
 {
-    /**
-     * @throws \App\Domain\Shared\Exception\DateTimeException
-     */
+    private UuidInterface $uuid;
+    private Email $email;
+    private HashedPassword $hashedPassword;
+    private DateTime $createdAt;
+    private ?DateTime $updatedAt;
+
     public static function create(
         UuidInterface $uuid,
         Credentials $credentials,
@@ -36,9 +39,6 @@ class User extends EventSourcedAggregateRoot
         return $user;
     }
 
-    /**
-     * @throws \App\Domain\Shared\Exception\DateTimeException
-     */
     public function changeEmail(
         Email $email,
         UniqueEmailSpecificationInterface $uniqueEmailSpecification
@@ -47,9 +47,6 @@ class User extends EventSourcedAggregateRoot
         $this->apply(new UserEmailChanged($this->uuid, $email, DateTime::now()));
     }
 
-    /**
-     * @throws InvalidCredentialsException
-     */
     public function signIn(string $plainPassword): void
     {
         if (!$this->hashedPassword->match($plainPassword)) {
@@ -68,9 +65,6 @@ class User extends EventSourcedAggregateRoot
         $this->setCreatedAt($event->createdAt);
     }
 
-    /**
-     * @throws \Assert\AssertionFailedException
-     */
     protected function applyUserEmailChanged(UserEmailChanged $event): void
     {
         Assertion::notEq($this->email->toString(), $event->email->toString(), 'New email should be different');
@@ -123,19 +117,4 @@ class User extends EventSourcedAggregateRoot
     {
         return $this->uuid->toString();
     }
-
-    /** @var UuidInterface */
-    private $uuid;
-
-    /** @var Email */
-    private $email;
-
-    /** @var HashedPassword */
-    private $hashedPassword;
-
-    /** @var DateTime */
-    private $createdAt;
-
-    /** @var DateTime|null */
-    private $updatedAt;
 }

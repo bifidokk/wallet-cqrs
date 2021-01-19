@@ -9,6 +9,7 @@ use App\Domain\Shared\Exception\DateTimeException;
 class DateTime
 {
     public const FORMAT = 'Y-m-d\TH:i:s.uP';
+    private \DateTimeImmutable $dateTime;
 
     /**
      * @throws DateTimeException
@@ -51,7 +52,4 @@ class DateTime
     {
         return $this->dateTime;
     }
-
-    /** @var \DateTimeImmutable */
-    private $dateTime;
 }

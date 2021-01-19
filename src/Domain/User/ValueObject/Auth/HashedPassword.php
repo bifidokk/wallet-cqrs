@@ -8,6 +8,10 @@ use Assert\Assertion;
 
 final class HashedPassword
 {
+    private string $hashedPassword;
+
+    public const COST = 12;
+
     /**
      * @throws \Assert\AssertionFailedException
      */
@@ -71,9 +75,4 @@ final class HashedPassword
     private function __construct()
     {
     }
-
-    /** @var string */
-    private $hashedPassword;
-
-    public const COST = 12;
 }

@@ -13,6 +13,17 @@ use Ramsey\Uuid\UuidInterface;
 
 final class UserEmailChanged implements Serializable
 {
+    public UuidInterface $uuid;
+    public Email $email;
+    public DateTime $updatedAt;
+
+    public function __construct(UuidInterface $uuid, Email $email, DateTime $updatedAt)
+    {
+        $this->email = $email;
+        $this->uuid = $uuid;
+        $this->updatedAt = $updatedAt;
+    }
+
     /**
      * @throws \Assert\AssertionFailedException
      */
@@ -36,20 +47,4 @@ final class UserEmailChanged implements Serializable
             'updated_at' => $this->updatedAt->toString(),
         ];
     }
-
-    public function __construct(UuidInterface $uuid, Email $email, DateTime $updatedAt)
-    {
-        $this->email = $email;
-        $this->uuid = $uuid;
-        $this->updatedAt = $updatedAt;
-    }
-
-    /** @var UuidInterface */
-    public $uuid;
-
-    /** @var Email */
-    public $email;
-
-    /** @var DateTime */
-    public $updatedAt;
 }

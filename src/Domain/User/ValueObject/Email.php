@@ -8,9 +8,8 @@ use Assert\Assertion;
 
 class Email
 {
-    /**
-     * @throws \Assert\AssertionFailedException
-     */
+    private string $email;
+
     public static function fromString(string $email): self
     {
         Assertion::email($email, 'Not a valid email');
@@ -35,7 +34,4 @@ class Email
     private function __construct()
     {
     }
-
-    /** @var string */
-    private $email;
 }

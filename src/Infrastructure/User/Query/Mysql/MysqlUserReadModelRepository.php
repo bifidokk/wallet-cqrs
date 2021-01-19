@@ -57,7 +57,7 @@ final class MysqlUserReadModelRepository extends MysqlRepository implements Chec
         $qb = $this->repository
             ->createQueryBuilder('user')
             ->where('user.credentials.email = :email')
-            ->setParameter('email', $email->toString())
+            ->setParameter('email', $email)
         ;
 
         return $this->oneOrException($qb);

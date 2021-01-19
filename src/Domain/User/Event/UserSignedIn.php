@@ -12,6 +12,15 @@ use Ramsey\Uuid\UuidInterface;
 
 final class UserSignedIn implements Serializable
 {
+    public Email $email;
+    public UuidInterface $uuid;
+
+    public function __construct(UuidInterface $uuid, Email $email)
+    {
+        $this->uuid = $uuid;
+        $this->email = $email;
+    }
+
     /**
      * @throws \Assert\AssertionFailedException
      */
@@ -33,16 +42,4 @@ final class UserSignedIn implements Serializable
             'email' => $this->email->toString(),
         ];
     }
-
-    public function __construct(UuidInterface $uuid, Email $email)
-    {
-        $this->uuid = $uuid;
-        $this->email = $email;
-    }
-
-    /** @var Email */
-    public $email;
-
-    /** @var UuidInterface */
-    public $uuid;
 }
