@@ -16,20 +16,6 @@ use Ramsey\Uuid\Uuid;
 final class GetEventsTest extends ApplicationTestCase
 {
     /**
-     * @test
-     *
-     * @group integration
-     */
-    public function processed_events_must_be_in_elastic_search(): void
-    {
-        $response = $this->ask(new GetEventsQuery());
-
-        self::assertInstanceOf(Collection::class, $response);
-        self::assertSame(1, $response->total);
-        self::assertSame('App.Domain.User.Event.UserWasCreated', $response->data[0]['type']);
-    }
-
-    /**
      * @throws \Exception
      * @throws \Assert\AssertionFailedException
      */
@@ -69,5 +55,19 @@ final class GetEventsTest extends ApplicationTestCase
         $eventReadStore->delete();
 
         parent::tearDown();
+    }
+
+    /**
+     * @test
+     *
+     * @group integration
+     */
+    public function processed_events_must_be_in_elastic_search(): void
+    {
+        $response = $this->ask(new GetEventsQuery());
+
+        self::assertInstanceOf(Collection::class, $response);
+        self::assertSame(1, $response->total);
+        self::assertSame('App.Domain.User.Event.UserWasCreated', $response->data[0]['type']);
     }
 }

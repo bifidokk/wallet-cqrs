@@ -10,6 +10,14 @@ use App\Domain\Shared\Event\EventRepositoryInterface;
 
 class GetEventsHandler implements QueryHandlerInterface
 {
+    /** @var EventRepositoryInterface */
+    private $eventRepository;
+
+    public function __construct(EventRepositoryInterface $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
+    }
+
     /**
      * @throws \App\Domain\Shared\Query\Exception\NotFoundException
      */
@@ -19,12 +27,4 @@ class GetEventsHandler implements QueryHandlerInterface
 
         return new Collection($query->page, $query->limit, $result['total'], $result['data']);
     }
-
-    public function __construct(EventRepositoryInterface $eventRepository)
-    {
-        $this->eventRepository = $eventRepository;
-    }
-
-    /** @var EventRepositoryInterface */
-    private $eventRepository;
 }

@@ -9,6 +9,9 @@ use Broadway\EventHandling\EventListener;
 
 class EventCollectorListener implements EventListener
 {
+    /** @var array */
+    private $publishedEvents = [];
+
     public function handle(DomainMessage $domainMessage): void
     {
         $this->publishedEvents[] = $domainMessage;
@@ -22,7 +25,4 @@ class EventCollectorListener implements EventListener
 
         return $events;
     }
-
-    /** @var array */
-    private $publishedEvents = [];
 }

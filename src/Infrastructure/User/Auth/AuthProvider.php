@@ -11,6 +11,14 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class AuthProvider implements UserProviderInterface
 {
+    /** @var MysqlUserReadModelRepository */
+    private $userReadModelRepository;
+
+    public function __construct(MysqlUserReadModelRepository $userReadModelRepository)
+    {
+        $this->userReadModelRepository = $userReadModelRepository;
+    }
+
     /**
      * @param string $email
      *
@@ -42,14 +50,6 @@ class AuthProvider implements UserProviderInterface
 
     public function supportsClass($class): bool
     {
-        return Auth::class === $class;
+        return $class === Auth::class;
     }
-
-    public function __construct(MysqlUserReadModelRepository $userReadModelRepository)
-    {
-        $this->userReadModelRepository = $userReadModelRepository;
-    }
-
-    /** @var MysqlUserReadModelRepository */
-    private $userReadModelRepository;
 }

@@ -1,9 +1,67 @@
 imports:
-  - { resource: 'vendor/sylius-labs/coding-standard/easy-coding-standard.yml' }
-
-services:
-  PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer: ~
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/psr12.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/symfony.yaml' }
 
 parameters:
-  exclude_files:
-    - '**/var/*'
+  skip:
+    PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer: ~
+    PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer: ~
+    PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer: ~
+    PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer: ~
+
+services:
+  PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer:
+    syntax: short
+
+  PhpCsFixer\Fixer\Operator\ConcatSpaceFixer:
+    spacing: none
+
+  PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer:
+    equal: false
+    identical: false
+    always_move_variable: false
+
+  PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer:
+    statements:
+      - case
+      - continue
+      - declare
+      - default
+      - die
+      - do
+      - exit
+      - for
+      - foreach
+      - goto
+      - if
+      - include
+      - include_once
+      - require
+      - require_once
+      - return
+      - switch
+      - throw
+      - try
+      - while
+      - yield
+
+  PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer:
+    only_untyped: true
+
+  PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer:
+    null_adjustment: always_last
+    sort_algorithm: none
+
+  PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+    elements:
+      - const
+      - property
+      - method
+
+  PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer: ~
+
+  PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
+#    PhpCsFixer\Fixer\Strict\StrictComparisonFixer: ~
+#    PhpCsFixer\Fixer\Strict\StrictParamFixer: ~
+#    SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff: ~
+#    PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff

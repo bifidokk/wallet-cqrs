@@ -16,6 +16,22 @@ abstract class QueryController
 {
     private const CACHE_MAX_AGE = 31536000; // Year.
 
+    /** @var JsonApiFormatter */
+    private $formatter;
+
+    /** @var QueryBus */
+    private $queryBus;
+
+    /** @var UrlGeneratorInterface */
+    private $router;
+
+    public function __construct(QueryBus $queryBus, JsonApiFormatter $formatter, UrlGeneratorInterface $router)
+    {
+        $this->queryBus = $queryBus;
+        $this->formatter = $formatter;
+        $this->router = $router;
+    }
+
     /**
      * @throws \Throwable
      */
@@ -51,20 +67,4 @@ abstract class QueryController
                 ->setSharedMaxAge(self::CACHE_MAX_AGE);
         }
     }
-
-    public function __construct(QueryBus $queryBus, JsonApiFormatter $formatter, UrlGeneratorInterface $router)
-    {
-        $this->queryBus = $queryBus;
-        $this->formatter = $formatter;
-        $this->router = $router;
-    }
-
-    /** @var JsonApiFormatter */
-    private $formatter;
-
-    /** @var QueryBus */
-    private $queryBus;
-
-    /** @var UrlGeneratorInterface */
-    private $router;
 }

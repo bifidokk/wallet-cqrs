@@ -10,6 +10,9 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class InMemoryProducer implements ProducerInterface
 {
+    /** @var array */
+    protected $consumers = [];
+
     public function publish($msgBody, $routingKey = '', $additionalProperties = []): void
     {
         $amqMessage = $this->amqMessageAdapter($msgBody, $additionalProperties);
@@ -42,7 +45,4 @@ class InMemoryProducer implements ProducerInterface
     {
         return new AMQPMessage($body, $properties);
     }
-
-    /** @var array */
-    protected $consumers = [];
 }

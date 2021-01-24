@@ -27,6 +27,16 @@ class DateTime
         return self::create($dateTime);
     }
 
+    public function toString(): string
+    {
+        return $this->dateTime->format(self::FORMAT);
+    }
+
+    public function toNative(): \DateTimeImmutable
+    {
+        return $this->dateTime;
+    }
+
     /**
      * @throws DateTimeException
      */
@@ -41,15 +51,5 @@ class DateTime
         }
 
         return $self;
-    }
-
-    public function toString(): string
-    {
-        return $this->dateTime->format(self::FORMAT);
-    }
-
-    public function toNative(): \DateTimeImmutable
-    {
-        return $this->dateTime;
     }
 }

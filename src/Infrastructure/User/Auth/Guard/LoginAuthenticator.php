@@ -28,6 +28,25 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator
 
     private const SUCCESS_REDIRECT = 'profile';
 
+    /** @var CommandBus */
+    private $bus;
+
+    /** @var QueryBus */
+    private $queryBus;
+
+    /** @var UrlGeneratorInterface */
+    private $router;
+
+    public function __construct(
+        CommandBus $commandBus,
+        QueryBus $queryBus,
+        UrlGeneratorInterface $router
+    ) {
+        $this->bus = $commandBus;
+        $this->router = $router;
+        $this->queryBus = $queryBus;
+    }
+
     /**
      * Does the authenticator support the given Request?
      *
@@ -111,6 +130,8 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator
      * The *credentials* are the return value from getCredentials()
      *
      * @throws AuthenticationException
+     *
+     * @param mixed $credentials
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
@@ -137,23 +158,4 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         return $this->router->generate(self::LOGIN);
     }
-
-    public function __construct(
-        CommandBus $commandBus,
-        QueryBus $queryBus,
-        UrlGeneratorInterface $router
-    ) {
-        $this->bus = $commandBus;
-        $this->router = $router;
-        $this->queryBus = $queryBus;
-    }
-
-    /** @var CommandBus */
-    private $bus;
-
-    /** @var QueryBus */
-    private $queryBus;
-
-    /** @var UrlGeneratorInterface */
-    private $router;
 }

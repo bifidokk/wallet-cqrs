@@ -15,6 +15,27 @@ use PHPUnit\Framework\TestCase;
 
 class EventElasticRepositoryTest extends TestCase
 {
+    /** @var EventElasticRepository|null */
+    private $repo;
+
+    protected function setUp(): void
+    {
+        $this->repo = new EventElasticRepository(
+            [
+                'hosts' => [
+                    'elasticsearch',
+                ],
+            ]
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->repo->delete();
+
+        $this->repo = null;
+    }
+
     /**
      * @test
      *
@@ -54,25 +75,4 @@ class EventElasticRepositoryTest extends TestCase
 
         self::assertSame(1, $result['hits']['total']);
     }
-
-    protected function setUp(): void
-    {
-        $this->repo = new EventElasticRepository(
-            [
-                'hosts' => [
-                    'elasticsearch',
-                ],
-            ]
-        );
-    }
-
-    protected function tearDown(): void
-    {
-        $this->repo->delete();
-
-        $this->repo = null;
-    }
-
-    /** @var EventElasticRepository|null */
-    private $repo;
 }

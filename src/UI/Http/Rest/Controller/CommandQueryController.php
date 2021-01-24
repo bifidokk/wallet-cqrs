@@ -12,13 +12,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommandQueryController extends QueryController
 {
-    /**
-     * @throws \Throwable
-     */
-    protected function exec(CommandInterface $command): void
-    {
-        $this->commandBus->handle($command);
-    }
+    /** @var CommandBus */
+    private $commandBus;
 
     public function __construct(
         CommandBus $commandBus,
@@ -30,6 +25,11 @@ class CommandQueryController extends QueryController
         $this->commandBus = $commandBus;
     }
 
-    /** @var CommandBus */
-    private $commandBus;
+    /**
+     * @throws \Throwable
+     */
+    protected function exec(CommandInterface $command): void
+    {
+        $this->commandBus->handle($command);
+    }
 }

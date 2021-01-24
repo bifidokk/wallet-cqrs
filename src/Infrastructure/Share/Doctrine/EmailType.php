@@ -23,7 +23,7 @@ final class EmailType extends StringType
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
@@ -43,7 +43,7 @@ final class EmailType extends StringType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value || $value instanceof Email) {
+        if ($value === null || $value instanceof Email) {
             return $value;
         }
 

@@ -9,6 +9,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class Session
 {
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     public function get(): array
     {
         $token = $this->tokenStorage->getToken();
@@ -34,12 +42,4 @@ final class Session
     {
         return $this->get()['uuid']->toString() === $uuid;
     }
-
-    public function __construct(TokenStorageInterface $tokenStorage)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
 }

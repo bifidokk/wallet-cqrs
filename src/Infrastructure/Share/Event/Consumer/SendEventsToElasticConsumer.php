@@ -10,16 +10,16 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class SendEventsToElasticConsumer implements ConsumerInterface
 {
-    public function execute(AMQPMessage $msg): void
-    {
-        $this->eventElasticRepository->store(unserialize($msg->body));
-    }
+    /** @var EventElasticRepository */
+    private $eventElasticRepository;
 
     public function __construct(EventElasticRepository $eventElasticRepository)
     {
         $this->eventElasticRepository = $eventElasticRepository;
     }
 
-    /** @var EventElasticRepository */
-    private $eventElasticRepository;
+    public function execute(AMQPMessage $msg): void
+    {
+        $this->eventElasticRepository->store(unserialize($msg->body));
+    }
 }

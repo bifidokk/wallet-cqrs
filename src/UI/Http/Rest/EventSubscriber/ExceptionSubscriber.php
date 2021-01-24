@@ -18,6 +18,14 @@ use Throwable;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
+    /** @var string */
+    private $environment;
+
+    public function __construct()
+    {
+        $this->environment = (string) getenv('APP_ENV') ?? 'dev';
+    }
+
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
@@ -28,6 +36,13 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $response->setData($this->getErrorMessage($exception, $response));
 
         $event->setResponse($response);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            KernelEvents::EXCEPTION => 'onKernelException',
+        ];
     }
 
     private function getStatusCode(Throwable $exception): int
@@ -46,7 +61,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             ],
         ];
 
-        if ('dev' === $this->environment) {
+        if ($this->environment === 'dev') {
             $error = array_merge(
                 $error,
                 [
@@ -79,18 +94,22 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 $statusCode = $exception->getStatusCode();
 
                 break;
+
             case $exception instanceof InvalidCredentialsException:
                 $statusCode = Response::HTTP_UNAUTHORIZED;
 
                 break;
+
             case $exception instanceof ForbiddenException:
                 $statusCode = Response::HTTP_FORBIDDEN;
 
                 break;
+
             case $exception instanceof AggregateNotFoundException || $exception instanceof NotFoundException:
                 $statusCode = Response::HTTP_NOT_FOUND;
 
                 break;
+
             case $exception instanceof \InvalidArgumentException:
                 $statusCode = Response::HTTP_BAD_REQUEST;
 
@@ -99,19 +118,4 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
         return $statusCode;
     }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::EXCEPTION => 'onKernelException',
-        ];
-    }
-
-    public function __construct()
-    {
-        $this->environment = (string) getenv('APP_ENV') ?? 'dev';
-    }
-
-    /** @var string */
-    private $environment;
 }

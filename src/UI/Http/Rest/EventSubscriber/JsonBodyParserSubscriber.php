@@ -32,32 +32,32 @@ class JsonBodyParserSubscriber implements EventSubscriberInterface
         }
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onKernelRequest',
+        ];
+    }
+
     private function isJsonRequest(Request $request): bool
     {
-        return 'json' === $request->getContentType();
+        return $request->getContentType() === 'json';
     }
 
     private function transformJsonBody(Request $request): bool
     {
         $data = json_decode((string) $request->getContent(), true);
 
-        if (\JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== \JSON_ERROR_NONE) {
             return false;
         }
 
-        if (null === $data) {
+        if ($data === null) {
             return true;
         }
 
         $request->request->replace($data);
 
         return true;
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => 'onKernelRequest',
-        ];
     }
 }

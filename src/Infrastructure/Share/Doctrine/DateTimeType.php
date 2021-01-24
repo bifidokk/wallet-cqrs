@@ -25,7 +25,7 @@ class DateTimeType extends DateTimeImmutableType
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (null === $value) {
+        if ($value === null) {
             return $value;
         }
 
@@ -45,7 +45,7 @@ class DateTimeType extends DateTimeImmutableType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value || $value instanceof DateTime) {
+        if ($value === null || $value instanceof DateTime) {
             return $value;
         }
 

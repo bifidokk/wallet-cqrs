@@ -10,6 +10,15 @@ class Email
 {
     private string $email;
 
+    private function __construct()
+    {
+    }
+
+    public function __toString(): string
+    {
+        return $this->email;
+    }
+
     public static function fromString(string $email): self
     {
         Assertion::email($email, 'Not a valid email');
@@ -24,14 +33,5 @@ class Email
     public function toString(): string
     {
         return $this->email;
-    }
-
-    public function __toString(): string
-    {
-        return $this->email;
-    }
-
-    private function __construct()
-    {
     }
 }

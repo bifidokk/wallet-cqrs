@@ -11,6 +11,14 @@ use App\Infrastructure\User\Query\Projections\UserView;
 
 class FindByEmailHandler implements QueryHandlerInterface
 {
+    /** @var MysqlUserReadModelRepository */
+    private $repository;
+
+    public function __construct(MysqlUserReadModelRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @throws \App\Domain\Shared\Query\Exception\NotFoundException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -22,12 +30,4 @@ class FindByEmailHandler implements QueryHandlerInterface
 
         return new Item($userView);
     }
-
-    public function __construct(MysqlUserReadModelRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    /** @var MysqlUserReadModelRepository */
-    private $repository;
 }

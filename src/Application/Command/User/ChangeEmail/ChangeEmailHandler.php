@@ -10,14 +10,11 @@ use App\Domain\User\Specification\UniqueEmailSpecificationInterface;
 
 class ChangeEmailHandler implements CommandHandlerInterface
 {
-    public function __invoke(ChangeEmailCommand $command): void
-    {
-        $user = $this->userRepository->get($command->userUuid);
+    /** @var UserRepositoryInterface */
+    private $userRepository;
 
-        $user->changeEmail($command->email, $this->uniqueEmailSpecification);
-
-        $this->userRepository->store($user);
-    }
+    /** @var UniqueEmailSpecificationInterface */
+    private $uniqueEmailSpecification;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -27,9 +24,12 @@ class ChangeEmailHandler implements CommandHandlerInterface
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
     }
 
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    public function __invoke(ChangeEmailCommand $command): void
+    {
+        $user = $this->userRepository->get($command->userUuid);
 
-    /** @var UniqueEmailSpecificationInterface */
-    private $uniqueEmailSpecification;
+        $user->changeEmail($command->email, $this->uniqueEmailSpecification);
+
+        $this->userRepository->store($user);
+    }
 }

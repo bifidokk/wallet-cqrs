@@ -13,6 +13,18 @@ use Ramsey\Uuid\UuidInterface;
 
 class SignInHandler implements CommandHandlerInterface
 {
+    /** @var UserRepositoryInterface */
+    private $userStore;
+
+    /** @var CheckUserByEmailInterface */
+    private $userCollection;
+
+    public function __construct(UserRepositoryInterface $userStore, CheckUserByEmailInterface $userCollection)
+    {
+        $this->userStore = $userStore;
+        $this->userCollection = $userCollection;
+    }
+
     public function __invoke(SignInCommand $command): void
     {
         $uuid = $this->uuidFromEmail($command->email);
@@ -28,22 +40,10 @@ class SignInHandler implements CommandHandlerInterface
     {
         $uuid = $this->userCollection->existsEmail($email);
 
-        if (null === $uuid) {
+        if ($uuid === null) {
             throw new InvalidCredentialsException();
         }
 
         return $uuid;
     }
-
-    public function __construct(UserRepositoryInterface $userStore, CheckUserByEmailInterface $userCollection)
-    {
-        $this->userStore = $userStore;
-        $this->userCollection = $userCollection;
-    }
-
-    /** @var UserRepositoryInterface */
-    private $userStore;
-
-    /** @var CheckUserByEmailInterface */
-    private $userCollection;
 }

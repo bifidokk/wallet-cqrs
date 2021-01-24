@@ -8,9 +8,17 @@ use Assert\Assertion;
 
 final class HashedPassword
 {
+    public const COST = 12;
     private string $hashedPassword;
 
-    public const COST = 12;
+    private function __construct()
+    {
+    }
+
+    public function __toString(): string
+    {
+        return $this->hashedPassword;
+    }
 
     /**
      * @throws \Assert\AssertionFailedException
@@ -38,6 +46,11 @@ final class HashedPassword
         return password_verify($plainPassword, $this->hashedPassword);
     }
 
+    public function toString(): string
+    {
+        return $this->hashedPassword;
+    }
+
     /**
      * @throws \Assert\AssertionFailedException
      */
@@ -54,25 +67,11 @@ final class HashedPassword
         $this->hashedPassword = $hashedPassword;
     }
 
-    public function toString(): string
-    {
-        return $this->hashedPassword;
-    }
-
-    public function __toString(): string
-    {
-        return $this->hashedPassword;
-    }
-
     /**
      * @throws \Assert\AssertionFailedException
      */
     private function validate(string $raw): void
     {
         Assertion::minLength($raw, 6, 'Min 6 characters password');
-    }
-
-    private function __construct()
-    {
     }
 }

@@ -13,6 +13,38 @@ use Symfony\Component\HttpFoundation\Response;
 class GetEventsControllerTest extends JsonApiTestCase
 {
     /**
+     * @throws \Assert\AssertionFailedException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        /** @var EventElasticRepository $eventReadStore */
+        $eventReadStore = $this->cli->getContainer()->get('events_repository');
+        $eventReadStore->boot();
+
+        /** @var InMemoryProducer $consumersRegistry */
+        $consumersRegistry = $this->cli->getContainer()->get(InMemoryProducer::class);
+        /** @var SendEventsToElasticConsumer $consumer */
+        $consumer = $this->cli->getContainer()->get('events_to_elastic');
+        $consumersRegistry->addConsumer('App.Domain.User.Event.UserWasCreated', $consumer);
+
+        $this->refreshIndex();
+
+        $this->createUser();
+        $this->auth();
+    }
+
+    protected function tearDown(): void
+    {
+        /** @var EventElasticRepository $eventReadStore */
+        $eventReadStore = $this->cli->getContainer()->get('events_repository');
+        $eventReadStore->delete();
+
+        parent::tearDown();
+    }
+
+    /**
      * @test
      *
      * @group e2e
@@ -81,37 +113,5 @@ class GetEventsControllerTest extends JsonApiTestCase
         /** @var EventElasticRepository $eventReadStore */
         $eventReadStore = $this->cli->getContainer()->get('events_repository');
         $eventReadStore->refresh();
-    }
-
-    /**
-     * @throws \Assert\AssertionFailedException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        /** @var EventElasticRepository $eventReadStore */
-        $eventReadStore = $this->cli->getContainer()->get('events_repository');
-        $eventReadStore->boot();
-
-        /** @var InMemoryProducer $consumersRegistry */
-        $consumersRegistry = $this->cli->getContainer()->get(InMemoryProducer::class);
-        /** @var SendEventsToElasticConsumer $consumer */
-        $consumer = $this->cli->getContainer()->get('events_to_elastic');
-        $consumersRegistry->addConsumer('App.Domain.User.Event.UserWasCreated', $consumer);
-
-        $this->refreshIndex();
-
-        $this->createUser();
-        $this->auth();
-    }
-
-    protected function tearDown(): void
-    {
-        /** @var EventElasticRepository $eventReadStore */
-        $eventReadStore = $this->cli->getContainer()->get('events_repository');
-        $eventReadStore->delete();
-
-        parent::tearDown();
     }
 }

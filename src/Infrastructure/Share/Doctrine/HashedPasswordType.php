@@ -23,7 +23,7 @@ final class HashedPasswordType extends StringType
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
@@ -43,7 +43,7 @@ final class HashedPasswordType extends StringType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value || $value instanceof HashedPassword) {
+        if ($value === null || $value instanceof HashedPassword) {
             return $value;
         }
 

@@ -16,6 +16,23 @@ use Ramsey\Uuid\Uuid;
 final class SignInTest extends ApplicationTestCase
 {
     /**
+     * @throws \Exception
+     * @throws \Assert\AssertionFailedException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $command = new SignUpCommand(
+            Uuid::uuid4()->toString(),
+            'asd@asd.asd',
+            'qwerqwer'
+        );
+
+        $this->handle($command);
+    }
+
+    /**
      * @test
      *
      * @group integration
@@ -69,22 +86,5 @@ final class SignInTest extends ApplicationTestCase
               'pass' => 'qwerqwer',
           ],
         ];
-    }
-
-    /**
-     * @throws \Exception
-     * @throws \Assert\AssertionFailedException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $command = new SignUpCommand(
-            Uuid::uuid4()->toString(),
-            'asd@asd.asd',
-            'qwerqwer'
-        );
-
-        $this->handle($command);
     }
 }

@@ -10,6 +10,18 @@ use Elasticsearch\ClientBuilder;
 
 abstract class ElasticRepository
 {
+    /** @var string */
+    private $index;
+
+    /** @var Client */
+    private $client;
+
+    public function __construct(array $config, string $index)
+    {
+        $this->client = ClientBuilder::fromConfig($config, true);
+        $this->index = $index;
+    }
+
     public function search(array $query): array
     {
         $finalQuery = [];
@@ -47,15 +59,6 @@ abstract class ElasticRepository
         }
     }
 
-    protected function add(array $document): array
-    {
-        $query['index'] = $query['type'] = $this->index;
-        $query['id'] = $document['id'] ?? null;
-        $query['body'] = $document;
-
-        return $this->client->index($query);
-    }
-
     public function page(int $page = 1, int $limit = 50): array
     {
         Assertion::greaterThan($page, 0, 'Pagination need to be > 0');
@@ -74,15 +77,12 @@ abstract class ElasticRepository
         ];
     }
 
-    public function __construct(array $config, string $index)
+    protected function add(array $document): array
     {
-        $this->client = ClientBuilder::fromConfig($config, true);
-        $this->index = $index;
+        $query['index'] = $query['type'] = $this->index;
+        $query['id'] = $document['id'] ?? null;
+        $query['body'] = $document;
+
+        return $this->client->index($query);
     }
-
-    /** @var string */
-    private $index;
-
-    /** @var Client */
-    private $client;
 }

@@ -9,6 +9,14 @@ use App\Infrastructure\Share\Bus\CommandInterface;
 
 abstract class CommandController
 {
+    /** @var CommandBus */
+    private $commandBus;
+
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+
     /**
      * @throws \Throwable
      */
@@ -16,12 +24,4 @@ abstract class CommandController
     {
         $this->commandBus->handle($command);
     }
-
-    public function __construct(CommandBus $commandBus)
-    {
-        $this->commandBus = $commandBus;
-    }
-
-    /** @var CommandBus */
-    private $commandBus;
 }

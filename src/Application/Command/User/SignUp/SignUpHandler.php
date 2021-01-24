@@ -11,12 +11,11 @@ use App\Domain\User\User;
 
 class SignUpHandler implements CommandHandlerInterface
 {
-    public function __invoke(SignUpCommand $command): void
-    {
-        $user = User::create($command->uuid, $command->credentials, $this->uniqueEmailSpecification);
+    /** @var UserRepositoryInterface */
+    private $userRepository;
 
-        $this->userRepository->store($user);
-    }
+    /** @var UniqueEmailSpecificationInterface */
+    private $uniqueEmailSpecification;
 
     public function __construct(UserRepositoryInterface $userRepository, UniqueEmailSpecificationInterface $uniqueEmailSpecification)
     {
@@ -24,9 +23,10 @@ class SignUpHandler implements CommandHandlerInterface
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
     }
 
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    public function __invoke(SignUpCommand $command): void
+    {
+        $user = User::create($command->uuid, $command->credentials, $this->uniqueEmailSpecification);
 
-    /** @var UniqueEmailSpecificationInterface */
-    private $uniqueEmailSpecification;
+        $this->userRepository->store($user);
+    }
 }

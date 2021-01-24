@@ -16,6 +16,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Version20180102233829 extends AbstractMigration implements ContainerAwareInterface
 {
+    /** @var EntityManager */
+    private $em;
+
+    /** @var DBALEventStore */
+    private $eventStore;
+
     public function up(Schema $schema): void
     {
         $this->eventStore->configureSchema($schema);
@@ -35,10 +41,4 @@ class Version20180102233829 extends AbstractMigration implements ContainerAwareI
         $this->eventStore = $container->get(DBALEventStore::class);
         $this->em = $container->get('doctrine.orm.entity_manager');
     }
-
-    /** @var EntityManager */
-    private $em;
-
-    /** @var DBALEventStore */
-    private $eventStore;
 }

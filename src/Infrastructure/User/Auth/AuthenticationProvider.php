@@ -9,6 +9,14 @@ use Ramsey\Uuid\UuidInterface;
 
 final class AuthenticationProvider
 {
+    /** @var JWTTokenManagerInterface */
+    private $JWTManager;
+
+    public function __construct(JWTTokenManagerInterface $JWTManager)
+    {
+        $this->JWTManager = $JWTManager;
+    }
+
     /**
      * @throws \Assert\AssertionFailedException
      */
@@ -18,12 +26,4 @@ final class AuthenticationProvider
 
         return $this->JWTManager->create($auth);
     }
-
-    public function __construct(JWTTokenManagerInterface $JWTManager)
-    {
-        $this->JWTManager = $JWTManager;
-    }
-
-    /** @var JWTTokenManagerInterface */
-    private $JWTManager;
 }

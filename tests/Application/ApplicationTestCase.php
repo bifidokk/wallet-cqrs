@@ -17,6 +17,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 abstract class ApplicationTestCase extends KernelTestCase
 {
+    /** @var CommandBus|null */
+    private $commandBus;
+
+    /** @var QueryBus|null */
+    private $queryBus;
+
+    protected function setUp(): void
+    {
+        self::bootKernel();
+
+        $this->commandBus = $this->service(CommandBus::class);
+        $this->queryBus = $this->service(QueryBus::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->commandBus = null;
+        $this->queryBus = null;
+    }
+
     /**
      * @throws \Throwable
      */
@@ -55,24 +75,4 @@ abstract class ApplicationTestCase extends KernelTestCase
             KernelEvents::TERMINATE
         );
     }
-
-    protected function setUp(): void
-    {
-        self::bootKernel();
-
-        $this->commandBus = $this->service(CommandBus::class);
-        $this->queryBus = $this->service(QueryBus::class);
-    }
-
-    protected function tearDown(): void
-    {
-        $this->commandBus = null;
-        $this->queryBus = null;
-    }
-
-    /** @var CommandBus|null */
-    private $commandBus;
-
-    /** @var QueryBus|null */
-    private $queryBus;
 }

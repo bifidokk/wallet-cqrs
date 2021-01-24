@@ -14,6 +14,25 @@ use Twig;
 
 class AbstractRenderController
 {
+    /** @var CommandBus */
+    private $commandBus;
+
+    /** @var QueryBus */
+    private $queryBus;
+
+    /** @var Twig\Environment */
+    private $template;
+
+    public function __construct(
+        Twig\Environment $template,
+        CommandBus $commandBus,
+        QueryBus $queryBus
+    ) {
+        $this->template = $template;
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
+    }
+
     /**
      * @throws Twig\Error\LoaderError
      * @throws Twig\Error\RuntimeError
@@ -41,23 +60,4 @@ class AbstractRenderController
     {
         return $this->queryBus->handle($query);
     }
-
-    public function __construct(
-        Twig\Environment $template,
-        CommandBus $commandBus,
-        QueryBus $queryBus
-    ) {
-        $this->template = $template;
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
-    }
-
-    /** @var CommandBus */
-    private $commandBus;
-
-    /** @var QueryBus */
-    private $queryBus;
-
-    /** @var Twig\Environment */
-    private $template;
 }

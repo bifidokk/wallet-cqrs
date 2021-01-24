@@ -18,6 +18,31 @@ use Ramsey\Uuid\Uuid;
 
 class EventPublisherTest extends TestCase
 {
+    /** @var Consumer|null */
+    private $consumer;
+
+    /** @var EventPublisher|null */
+    private $publisher;
+
+    protected function setup(): void
+    {
+        $producer = new InMemoryProducer();
+
+        $this->publisher = new AsyncEventPublisher(
+            $producer
+                ->addConsumer(
+                    'App.Domain.User.Event.UserWasCreated',
+                    $this->createConsumer()
+                )
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->publisher = null;
+        $this->consumer = null;
+    }
+
     /**
      * @test
      *
@@ -63,31 +88,6 @@ class EventPublisherTest extends TestCase
     {
         return $this->consumer = new Consumer();
     }
-
-    protected function setup(): void
-    {
-        $producer = new InMemoryProducer();
-
-        $this->publisher = new AsyncEventPublisher(
-            $producer
-                ->addConsumer(
-                    'App.Domain.User.Event.UserWasCreated',
-                    $this->createConsumer()
-                )
-        );
-    }
-
-    protected function tearDown(): void
-    {
-        $this->publisher = null;
-        $this->consumer = null;
-    }
-
-    /** @var Consumer|null */
-    private $consumer;
-
-    /** @var EventPublisher|null */
-    private $publisher;
 }
 
 class Consumer implements ConsumerInterface

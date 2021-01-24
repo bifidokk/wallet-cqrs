@@ -70,7 +70,7 @@ class GetUserByEmailControllerTest extends JsonApiTestCase
         $emailString = $this->createUser();
         $this->auth();
 
-        $this->get('/api/user/' . $emailString);
+        $this->get('/api/user/'.$emailString);
 
         self::assertSame(Response::HTTP_OK, $this->cli->getResponse()->getStatusCode());
 

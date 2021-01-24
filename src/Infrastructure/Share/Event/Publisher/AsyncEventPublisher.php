@@ -13,6 +13,17 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class AsyncEventPublisher implements EventPublisher, EventSubscriberInterface, EventListener
 {
+    /** @var ProducerInterface */
+    private $eventProducer;
+
+    /** @var DomainMessage[] */
+    private $events = [];
+
+    public function __construct(ProducerInterface $eventProducer)
+    {
+        $this->eventProducer = $eventProducer;
+    }
+
     public function publish(): void
     {
         if (empty($this->events)) {
@@ -36,15 +47,4 @@ final class AsyncEventPublisher implements EventPublisher, EventSubscriberInterf
             ConsoleEvents::TERMINATE => 'publish',
         ];
     }
-
-    public function __construct(ProducerInterface $eventProducer)
-    {
-        $this->eventProducer = $eventProducer;
-    }
-
-    /** @var ProducerInterface */
-    private $eventProducer;
-
-    /** @var DomainMessage[] */
-    private $events = [];
 }

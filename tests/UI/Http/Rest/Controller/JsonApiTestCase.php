@@ -18,6 +18,28 @@ abstract class JsonApiTestCase extends WebTestCase
 
     public const DEFAULT_PASS = '1234567890';
 
+    /** @var Client|KernelBrowser|null */
+    protected $cli;
+
+    /** @var UuidInterface|null */
+    protected $userUuid;
+
+    /** @var string|null */
+    private $token;
+
+    protected function setUp(): void
+    {
+        self::ensureKernelShutdown();
+        $this->cli = static::createClient();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->cli = null;
+        $this->token = null;
+        $this->userUuid = null;
+    }
+
     /**
      * @throws \Assert\AssertionFailedException
      * @throws \Exception
@@ -90,31 +112,9 @@ abstract class JsonApiTestCase extends WebTestCase
         ];
 
         if ($this->token) {
-            $headers['HTTP_Authorization'] = 'Bearer ' . $this->token;
+            $headers['HTTP_Authorization'] = 'Bearer '.$this->token;
         }
 
         return $headers;
     }
-
-    protected function setUp(): void
-    {
-        self::ensureKernelShutdown();
-        $this->cli = static::createClient();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->cli = null;
-        $this->token = null;
-        $this->userUuid = null;
-    }
-
-    /** @var Client|KernelBrowser|null */
-    protected $cli;
-
-    /** @var string|null */
-    private $token;
-
-    /** @var UuidInterface|null */
-    protected $userUuid;
 }

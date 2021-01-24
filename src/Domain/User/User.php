@@ -56,6 +56,31 @@ class User extends EventSourcedAggregateRoot
         $this->apply(new UserSignedIn($this->uuid, $this->email));
     }
 
+    public function createdAt(): string
+    {
+        return $this->createdAt->toString();
+    }
+
+    public function updatedAt(): ?string
+    {
+        return isset($this->updatedAt) ? $this->updatedAt->toString() : null;
+    }
+
+    public function email(): string
+    {
+        return $this->email->toString();
+    }
+
+    public function uuid(): string
+    {
+        return $this->uuid->toString();
+    }
+
+    public function getAggregateRootId(): string
+    {
+        return $this->uuid->toString();
+    }
+
     protected function applyUserWasCreated(UserWasCreated $event): void
     {
         $this->uuid = $event->uuid;
@@ -91,30 +116,5 @@ class User extends EventSourcedAggregateRoot
     private function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-    }
-
-    public function createdAt(): string
-    {
-        return $this->createdAt->toString();
-    }
-
-    public function updatedAt(): ?string
-    {
-        return isset($this->updatedAt) ? $this->updatedAt->toString() : null;
-    }
-
-    public function email(): string
-    {
-        return $this->email->toString();
-    }
-
-    public function uuid(): string
-    {
-        return $this->uuid->toString();
-    }
-
-    public function getAggregateRootId(): string
-    {
-        return $this->uuid->toString();
     }
 }

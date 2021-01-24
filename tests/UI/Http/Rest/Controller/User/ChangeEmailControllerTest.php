@@ -14,6 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 class ChangeEmailControllerTest extends JsonApiTestCase
 {
     /**
+     * @throws \Assert\AssertionFailedException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->createUser();
+        $this->auth();
+    }
+
+    /**
      * @test
      *
      * @group e2e
@@ -22,7 +33,7 @@ class ChangeEmailControllerTest extends JsonApiTestCase
      */
     public function given_a_valid_uuid_and_email_should_return_a_201_status_code(): void
     {
-        $this->post('/api/users/' . $this->userUuid->toString() . '/email', [
+        $this->post('/api/users/'.$this->userUuid->toString().'/email', [
             'email' => 'weba@jo.com',
         ]);
 
@@ -44,7 +55,7 @@ class ChangeEmailControllerTest extends JsonApiTestCase
      */
     public function given_a_valid_uuid_and_email_user_should_not_change_others_email_and_gets_401(): void
     {
-        $this->post('/api/users/' . Uuid::uuid4()->toString() . '/email', [
+        $this->post('/api/users/'.Uuid::uuid4()->toString().'/email', [
             'email' => 'weba@jo.com',
         ]);
 
@@ -68,21 +79,10 @@ class ChangeEmailControllerTest extends JsonApiTestCase
      */
     public function given_a_invalid__email_should_return_a_400_status_code(): void
     {
-        $this->post('/api/users/' . $this->userUuid->toString() . '/email', [
+        $this->post('/api/users/'.$this->userUuid->toString().'/email', [
             'email' => 'webajo.com',
         ]);
 
         self::assertSame(Response::HTTP_BAD_REQUEST, $this->cli->getResponse()->getStatusCode());
-    }
-
-    /**
-     * @throws \Assert\AssertionFailedException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->createUser();
-        $this->auth();
     }
 }
