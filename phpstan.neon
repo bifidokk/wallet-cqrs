@@ -1,4 +1,26 @@
 parameters:
-	checkMissingIterableValueType: false
-	excludes_analyse:
-		- /app/src/Infrastructure/Share/Migrations/*
+    checkMissingIterableValueType: false
+    excludes_analyse:
+        - /app/src/Infrastructure/Share/Migrations/*
+    ignoreErrors:
+        -
+            message: "#^Method App\\\\Tests\\\\Application\\\\ApplicationTestCase\\:\\:ask\\(\\) has no return typehint specified\\.$#"
+            path: tests/Application/ApplicationTestCase.php
+        -
+            message: "#^Method App\\\\UI\\\\Http\\\\Web\\\\Controller\\\\AbstractRenderController\\:\\:ask\\(\\) has no return typehint specified\\.$#"
+            path: src/UI/Http/Web/Controller/AbstractRenderController.php
+        -
+            message: "#^Method App\\\\UI\\\\Http\\\\Rest\\\\Controller\\\\QueryController\\:\\:ask\\(\\) has no return typehint specified\\.$#"
+            path: src/UI/Http/Rest/Controller/QueryController.php
+        -
+            message: "#^Method App\\\\Infrastructure\\\\Share\\\\Query\\\\Repository\\\\MysqlRepository\\:\\:oneOrException\\(\\) has no return typehint specified\\.$#"
+            path: src/Infrastructure/Share/Query/Repository/MysqlRepository.php
+        -
+            message: "#^Method App\\\\Infrastructure\\\\Share\\\\Bus\\\\QueryBus\\:\\:handle\\(\\) has no return typehint specified\\.$#"
+            path: src/Infrastructure/Share/Bus/QueryBus.php
+        -
+            message: "#^Method App\\\\Domain\\\\Shared\\\\Specification\\\\AbstractSpecification\\:\\:not\\(\\) has parameter \\$value with no typehint specified\\.$#"
+            path: src/Domain/Shared/Specification/AbstractSpecification.php
+        -
+            message: "#^Method App\\\\Domain\\\\Shared\\\\Specification\\\\AbstractSpecification\\:\\:isSatisfiedBy\\(\\) has parameter \\$value with no typehint specified\\.$#"
+            path: src/Domain/Shared/Specification/AbstractSpecification.php
